@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // Your  code will go here
+
+    let root = document.querySelector("#root");
+
+    function App(){
+      let [selectAnswer, setSelectAnswer] = React.useState([]);
+      let [score, setScore] = React.useState(0);
+      let [submited, setSubmited] = React.useState(false);
+      let [questions, setQuestions] = React.useState([
+        {
+          question: "What is the capital of France?",
+          options: ["Paris", "London", "Berlin", "Madrid"],
+          answer: "Paris",
+          selectedAnswer: null,
+        },
+        {
+          question: "What is the capital of Japan?",
+          options: ["Beijing", "Tokyo", "Seoul", "Bangkok"],
+          answer: "Tokyo",
+          selectedAnswer: null,
+        },
+        {
+          question: "What is 2 + 2?",
+          options: ["3", "4", "5", "6"],
+          answer: "4",
+          selectedAnswer: null,
+        },
+        {
+          question: "Which planet is known as the Red Planet?",
+          options: ["Mars", "Venus", "Jupiter", "Saturn"],
+          answer: "Mars",
+          selectedAnswer: null,
+        },
+        {
+          question: "What is the tallest mountain in the world?",
+          options: ["Mount Everest", "K2", "Kangchenjunga", "Lhotse"],
+          answer: "Mount Everest",
+          selectedAnswer: null,
+        },
+        {
+          question: "Who is the author of 'To Kill a Mockingbird'?",
+          options: ["Harper Lee", "Mark Twain", "F. Scott Fitzgerald", "J.K. Rowling"],
+          answer: "Harper Lee",
+          selectedAnswer: null,
+        },
+        {
+          question: "Which element has the chemical symbol 'Fe'?",
+          options: ["Iron", "Gold", "Silver", "Copper"],
+          answer: "Iron",
+          selectedAnswer: null,
+        }
+      ])
+
+      function handleChange(e,index){
+        let newAns = {index, answer:e.target.value}
+        setSelectAnswer([...selectAnswer, newAns])
+
+      }
+
+      function calculateScore(){
+        let totalScore = score;
+        {selectAnswer.forEach((option,index) => {
+          questions.forEach((question,index) => {
+            if(option.answer === question.answer){
+           totalScore+=1  
+          }
+          
+          })
+          
+        })}
+        setScore(totalScore);
+        setSubmited(true);
+      }
+      
+
+      function handleReset(){
+        setSelectAnswer([]);
+        setSubmited(false);
+        setScore(0);
+      }
+
+      return(
+        <>
+          {!submited ? (
+            <div>
+              <h1>Quiz</h1>
+              {questions.map((question, index) => (
+                <div key={index}>
+                  <p>{index+1}. {question.question}</p>
+                  <ul>
+                    {question.options.map((option, optionindex) => (
+                      <li key={optionindex}>
+                        <label>
+                          <input
+                            type="radio"
+                            name={`question-${index}`}
+                            value={option}
+                            onChange={handleChange}
+                          />
+                          {option}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>   
+              ))}
+              
+              <button onClick={calculateScore}>Submit</button>
+            </div>
+           
+      ) : (
+          <div>
+            <h1>Score</h1>
+            <p>Your Score is {score} out of {questions.length}</p>
+            <button onClick={handleReset}>Reset Quze</button>
+          </div>
+          )}
+        </>
+      )
+    }
+
+    ReactDOM.createRoot(root).render(<App/>)
+  </script>
+</html>
+
+
+
+
+
+
+
+
+
+
